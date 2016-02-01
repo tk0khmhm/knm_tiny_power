@@ -28,6 +28,7 @@ class TinyInterface : public cereal::CerealCatkin{
 		void recvParam(float RG1[], float RG2[], float VG[]);
 		void recvData(float MVV[]);
 		void MCUR(float data[]);
+		void MPV(float data[]);
 		//void recvData(float ME[], float MVV[]);
 		void outputPWM(float du1,float du2);
 		void motionControl(float v,float yawrate);

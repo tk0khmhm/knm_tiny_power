@@ -159,6 +159,15 @@ void TinyInterface::MCUR(float data[])
 	dataStorage(strList_MCUR, "CUR", data, size_MCUR);
 }
 
+void TinyInterface::MPV(float data[])
+{
+	const int size_MPV = 1;
+	string reply_MPV;
+	readData("MPV\n\r", reply_MPV);
+	list<string> strList_MPV = split(reply_MPV, "\n\r>$, :");
+	dataStorage(strList_MPV, "PV", data, size_MPV);
+}
+
 /*
 void TinyInterface::recvData(float ME[], float MVV[])
 {

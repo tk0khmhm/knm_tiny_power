@@ -123,6 +123,7 @@ void mainLoop()
 	ros::Publisher pub1 = n.advertise<nav_msgs::Odometry>("tinypower/state", 10);
 	ros::Publisher pub2 = n.advertise<nav_msgs::Odometry>("tinypower/odom", 10);
 	ros::Publisher pub_cur = n.advertise<std_msgs::Float32>("tinypower/cur", 10);
+	ros::Publisher pub_vol = n.advertise<std_msgs::Float32>("tinypower/vol", 10);
 	ros::Subscriber sub1 = n.subscribe("tinypower/command_velocity", 10, cmdCallback);
 	
 	tf::TransformBroadcaster odom_broadcaster;
@@ -131,17 +132,23 @@ void mainLoop()
 	//TinyInterface device("/dev/tiny", 9600);
 	TinyInterface device("/dev/ttyUSB1", 57600);
 	//TinyInterface device("/dev/ttyS0", 57600);
+<<<<<<< HEAD
 	//TinyInterface device("/dev/ttyS0", 19200);
+=======
+	TinyInterface device("/dev/tinyUSB", 19200);
+>>>>>>> 814df485ae6fd6a97d9164b11eed4666c7aa0ac6
 	geometry_msgs::Pose2D pose;
 	pose.x=0;	pose.y=0;	pose.theta=0;
 	ros::Time current_time;
 	current_time = ros::Time::now();
 	std_msgs::Float32 cur_sum;
+	std_msgs::Float32 vol_msg;
 	
 	struct timeval s, e;
 	float dt = 0;
     
 	float cur[2];
+	float vol[1];
 
 	ros::Rate r(40);
 	while(ros::ok()){
@@ -159,7 +166,9 @@ void mainLoop()
 		//Receive DATA from Tiny
 		device.recvData(MVV);
 		device.MCUR(cur);
+		device.MPV(vol);
 		cur_sum.data = cur[0] + cur[1];
+		vol_msg.data = vol[0];
 		//Send Motion Command
 		device.motionControl(cmd.op_linear, cmd.op_angular);
 		//--------------------------------------------------------------
@@ -167,6 +176,7 @@ void mainLoop()
 		cout<<"V="<<cmd.op_linear<<", ANG="<<cmd.op_angular;
 		cout<<", actV="<<MVV[0]<<", actANG="<<MVV[1];
 		cout<<", Ir="<<cur[0]<<", Il="<<cur[1];
+		cout<<", V="<<vol[0];
 		
 		//State pulish
 		nav_msgs::Odometry tiny_state;
@@ -190,6 +200,7 @@ void mainLoop()
 		pub1.publish(tiny_state);
 		pub2.publish(tiny_odom);
 		pub_cur.publish(cur_sum);
+		pub_vol.publish(vol_msg);
 		
 		ros::spinOnce();
 		r.sleep();

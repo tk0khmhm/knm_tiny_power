@@ -68,42 +68,15 @@ if __name__ == '__main__':
 	
 	while not rospy.is_shutdown():
 		tinypower.commMVV()
-		r.sleep()
-	#while True:
-
-		####global_lock.acquire()
-		####ser.write("MVV\n")
-		####sleep(0.01)
-		####line = ser.readline()
-		####global_lock.release()
-		####print line
-		####print len(line)
-		####if len(line)>4:
-		####	data = line.split(':')
-		####	data = data[1].split('\r')
-		####	data = data[0].split(',')
-		####	#print data
-		####	global_lock.acquire()
-		####	ser.readline()
-		####	global_lock.release()
-
-		####	#calcOdometry(pose, tiny_state, dt);
 
 		odom_data.header.stamp = rospy.Time.now()
-		####	odom_data.pose.pose.position.x = float(data[2])
-		####	odom_data.pose.pose.position.y = float(data[3])
-		####	odom_data.twist.twist.linear.x = float(data[0])
-		####	odom_data.twist.twist.angular.z = float(data[1])
-		####odom_pub.publish(odom_data)
+		odom_data.pose.pose.position.x = tinypower.x
+		odom_data.pose.pose.position.y = tinypower.y
 		odom_data.twist.twist.linear.x = tinypower.linear
 		odom_data.twist.twist.angular.z = tinypower.angular
 		odom_pub.publish(odom_data)
 
-		#ser.readline()
-		#global_lock.release()
-
-		#sleep(0.5)
-		#r.sleep()
+		r.sleep()
 	print "Programm is finished"
 	#tinypower.stop()
 	rospy.spin()

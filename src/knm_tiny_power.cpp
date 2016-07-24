@@ -129,9 +129,9 @@ void mainLoop()
 	
 	//Constractor
 	//TinyInterface device("/dev/tiny", 9600);
-	//TinyInterface device("/dev/ttyUSB0", 57600);
+	TinyInterface device("/dev/ttyUSB1", 57600);
 	//TinyInterface device("/dev/ttyS0", 57600);
-	TinyInterface device("/dev/ttyS0", 19200);
+	//TinyInterface device("/dev/ttyS0", 19200);
 	geometry_msgs::Pose2D pose;
 	pose.x=0;	pose.y=0;	pose.theta=0;
 	ros::Time current_time;
@@ -143,7 +143,7 @@ void mainLoop()
     
 	float cur[2];
 
-	ros::Rate r(10);
+	ros::Rate r(40);
 	while(ros::ok()){
 		gettimeofday(&s, NULL);
 		current_time = ros::Time::now();
